@@ -1,10 +1,11 @@
-package amu.zhcetstudent;
+package amu.zhcetstudent.ui;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,13 +13,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import amu.zhcetstudent.R;
+import amu.zhcetstudent.contract.MainContract.MainView;
+import amu.zhcetstudent.contract.MainContract.MainPresenter;
+import amu.zhcetstudent.databinding.ActivityMainBinding;
+import amu.zhcetstudent.ui.presenter.MainActivityPresenter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements MainView, NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -33,18 +42,18 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView;
 
     private Unbinder unbinder;
+    private View root;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        root = binding.getRoot();
 
         unbinder = ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
-
-        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -52,6 +61,9 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+
+        MainPresenter mainPresenter = new MainActivityPresenter(this);
+        binding.appbarContent.setMainPresenter(mainPresenter);
     }
 
     @Override
@@ -114,5 +126,10 @@ public class MainActivity extends AppCompatActivity
         super.onStop();
 
         unbinder.unbind();
+    }
+
+    @Override
+    public void showData(String data) {
+        Snackbar.make(root, data, Snackbar.LENGTH_LONG).show();
     }
 }
