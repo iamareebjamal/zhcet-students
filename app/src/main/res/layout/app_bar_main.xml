@@ -4,7 +4,7 @@
     <data>
         <variable
             name="mainPresenter"
-            type="amu.zhcetstudent.contract.MainContract.MainPresenter" />
+            type="amu.zhcetstudent.contract.presenter.MainPresenter" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            android:onClick="@{() -> mainPresenter.loadData()}"
+            android:onClick="@{() -> mainPresenter.fetchUsers()}"
             app:srcCompat="@android:drawable/ic_dialog_email" />
 
     </android.support.design.widget.CoordinatorLayout>

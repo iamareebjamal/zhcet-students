@@ -1,11 +1,13 @@
 package amu.zhcetstudent.ui.presenter;
 
-import amu.zhcetstudent.contract.MainContract.MainPresenter;
-import amu.zhcetstudent.contract.MainContract.MainView;
+import amu.zhcetstudent.contract.presenter.MainPresenter;
+import amu.zhcetstudent.contract.view.MainView;
 
 public class MainActivityPresenter implements MainPresenter {
 
     private MainView mainView;
+
+    private boolean error;
 
     public MainActivityPresenter(MainView mainView) {
         this.mainView = mainView;
@@ -15,5 +17,4 @@ public class MainActivityPresenter implements MainPresenter {
     public void loadData() {
         mainView.showData("Honestly Brutal");
     }
-
 }
