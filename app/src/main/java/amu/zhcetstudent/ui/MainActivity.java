@@ -11,21 +11,19 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-import java.util.List;
 import amu.zhcetstudent.R;
 import amu.zhcetstudent.contract.presenter.MainPresenter;
 import amu.zhcetstudent.contract.view.MainView;
+import amu.zhcetstudent.data.model.Result;
 import amu.zhcetstudent.databinding.ActivityMainBinding;
 import amu.zhcetstudent.ui.presenter.MainActivityPresenter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.Observable;
 
 public class MainActivity extends AppCompatActivity
         implements MainView, NavigationView.OnNavigationItemSelectedListener {
@@ -62,8 +60,7 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        MainPresenter mainPresenter = new MainActivityPresenter(this);
-        binding.appbarContent.setMainPresenter(mainPresenter);
+        MainPresenter mainPresenter = new MainActivityPresenter(this, null);
     }
 
     @Override
@@ -78,7 +75,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -99,7 +95,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         switch (id) {
@@ -129,8 +124,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void showData(String data) {
-            Snackbar.make(root, data, Snackbar.LENGTH_LONG).show();
-            return;
+    public void showResult(Result result) {
+        Snackbar.make(root, "hello", Snackbar.LENGTH_LONG).show();
     }
+
+    @Override
+    public void showError(String error) {
+
+    }
+
+    @Override
+    public void showProgress(boolean show) {
+
+    }
+
 }

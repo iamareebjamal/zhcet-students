@@ -1,5 +1,5 @@
 package amu.zhcetstudent.contract.presenter;
 
 public interface MainPresenter {
-    void loadData();
+    void loadResult(String facultyNo, String enrollmentNo);
 }
