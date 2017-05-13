@@ -17,19 +17,23 @@ public class MainActivityPresenter implements MainPresenter {
     }
 
     @Override
-    public void loadResult(String facultyNo, String enrollmentNo) {
+    public void loadResult(String facultyNo, String enrolmentNo) {
+
         mainView.showProgress(true);
-        resultRepository.getResult(facultyNo, enrollmentNo)
+
+        resultRepository.getResult(facultyNo, enrolmentNo)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                            if (result.getError()) {
-                                mainView.showError(result.getMessage());
-                            } else {
-                                mainView.showResult(result);
-                            }
-                        },
-                        throwable -> mainView.showError(throwable.getMessage()));
-        mainView.showProgress(false);
+                    if (result.getError()) {
+                        mainView.showError(result.getMessage());
+                    } else {
+                        mainView.showResult(result);
+                    }
+                    mainView.showProgress(false);
+                }, throwable -> {
+                    mainView.showError("Network Error Occurred");
+                    mainView.showProgress(false);
+                });
     }
 }

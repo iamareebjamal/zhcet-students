@@ -1,5 +1,6 @@
 package amu.zhcetstudent;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,9 +23,10 @@ import io.reactivex.schedulers.Schedulers;
 public class MainPresenterTest {
 
     @Mock
-    MainView mainView;
-    @Mock
     ResultRepository resultRepository;
+
+    @Mock
+    MainView mainView;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -33,44 +35,43 @@ public class MainPresenterTest {
 
     @Before
     public void setUp() {
-
         mainPresenter = new MainActivityPresenter(mainView, resultRepository);
         RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(schedulerCallable -> Schedulers.trampoline());
     }
 
     @Test
-    public void shouldShowResult() {
-        Result res = new Result("14peb250", "gh0022");
+    public void shouldShowResults() {
+        Result testResult = new Result("14PEB049", "GF1032");
+
         Mockito.when(resultRepository
-                .getResult("14peb250", "gh0022"))
-                .thenReturn(Observable.just(res));
-        mainPresenter.loadResult("14peb250", "gh0022");
-        InOrder inorder = Mockito.inOrder(mainView);
-        inorder.verify(mainView).showProgress(true);
-        inorder.verify(mainView).showResult(res);
-        inorder.verify(mainView).showProgress(false);
+                .getResult("14PEB049", "GF1032"))
+                .thenReturn(Observable.just(testResult));
+
+        mainPresenter.loadResult("14PEB049", "GF1032");
+
+        InOrder inOrder = Mockito.inOrder(mainView, resultRepository);
+
+        inOrder.verify(mainView).showProgress(true);
+        inOrder.verify(resultRepository).getResult("14PEB049", "GF1032");
+        inOrder.verify(mainView).showResult(testResult);
+        inOrder.verify(mainView).showProgress(false);
     }
 
     @Test
     public void shouldShowError() {
         Mockito.when(resultRepository
-                .getResult("14peb250", "gh0022"))
-                .thenReturn(Observable.error(new RuntimeException("This is an error")));
-        mainPresenter.loadResult("14peb250", "gh0022");
-        InOrder inorder = Mockito.inOrder(mainView);
-        inorder.verify(mainView).showProgress(true);
-        inorder.verify(mainView).showError("This is an error");
-        inorder.verify(mainView).showProgress(false);
-    }
+                .getResult("14PEB049", "GF1032"))
+                .thenReturn(Observable.error(new RuntimeException()));
 
-    @Test
-    public void shouldShowNoResult() {
-        Mockito.when(resultRepository
-                .getResult("14peb250", "gh0022"))
-                .thenReturn(null);
-        mainPresenter.loadResult("14peb250", "gh0022");
-        Mockito.verify(mainView).showError("NO_RESULT");
+        mainPresenter.loadResult("14PEB049", "GF1032");
+
+        InOrder inOrder = Mockito.inOrder(mainView, resultRepository);
+
+        inOrder.verify(mainView).showProgress(true);
+        inOrder.verify(resultRepository).getResult("14PEB049", "GF1032");
+        inOrder.verify(mainView).showError(Mockito.anyString());
+        inOrder.verify(mainView).showProgress(false);
     }
 
     @Test
@@ -83,6 +84,12 @@ public class MainPresenterTest {
                 .thenReturn(Observable.just(result));
         mainPresenter.loadResult("14peb250", "gh0022");
         Mockito.verify(mainView).showError(result.getMessage());
+    }
+
+    @After
+    public void tearDown() {
+        RxJavaPlugins.reset();
+        RxAndroidPlugins.reset();
     }
 
 }

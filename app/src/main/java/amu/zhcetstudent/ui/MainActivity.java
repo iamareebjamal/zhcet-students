@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,7 +22,6 @@ import amu.zhcetstudent.ui.presenter.MainActivityPresenter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.Observable;
 
 public class MainActivity extends AppCompatActivity
         implements MainView, NavigationView.OnNavigationItemSelectedListener {
@@ -125,7 +123,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void showResult(Result result) {
-        Snackbar.make(root, "hello", Snackbar.LENGTH_LONG).show();
+
     }
 
     @Override

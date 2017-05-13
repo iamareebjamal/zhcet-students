@@ -12,7 +12,7 @@ public class Result {
     private List<Subject> results = null;
     private String spi;
     private String user;
-    private Boolean error;
+    private boolean error;
     private String message;
 
     public Result(String facultyNo, String enrollmentNo) {
@@ -101,3 +101,4 @@ public class Result {
     }
 
 }
+
